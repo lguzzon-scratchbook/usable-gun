@@ -3,6 +3,6 @@
  */
 
 export default {
-	major: 2,
-	minor: 1,
-};
+  major: 2,
+  minor: 1
+}

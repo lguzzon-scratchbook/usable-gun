@@ -5,16 +5,15 @@
  * This wrapper restores the old export structure to make it compatible with the Gun code, which is expecting the CJS export layout.
  */
 
-const _ws = await import("ws");
+const _ws = await import('ws')
 
-const _WebSocket = _ws.WebSocket ?? _ws.default;
+const _WebSocket = _ws.WebSocket ?? _ws.default
 
-_WebSocket.createWebSocketStream ??= _ws.createWebSocketStream;
-_WebSocket.Server ??= _ws.WebSocketServer;
-_WebSocket.Sender ??= _ws.Sender;
-_WebSocket.Receiver ??= _ws.Receiver;
-_WebSocket.WebSocket ??= _ws.WebSocket;
-_WebSocket.WebSocketServer ??= _ws.WebSocketServer;
+_WebSocket.createWebSocketStream ??= _ws.createWebSocketStream
+_WebSocket.Server ??= _ws.WebSocketServer
+_WebSocket.Sender ??= _ws.Sender
+_WebSocket.Receiver ??= _ws.Receiver
+_WebSocket.WebSocket ??= _ws.WebSocket
+_WebSocket.WebSocketServer ??= _ws.WebSocketServer
 
-export default _WebSocket;
-
+export default _WebSocket

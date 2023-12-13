@@ -1,29 +1,29 @@
 import {
-	GunEnvironment,
+  GunEnvironment,
 
-	basicGunPlugin,
-	basicSeaPlugin,
-	defaultGunPlugin,
-	defaultSeaPlugin,
-	defaultAxePlugin,
-	defaultBrowserPlugin,
-	
-	NoDebugger,
-	ConsoleDebugger,
-	StoreDebugger,
-} from "./index.js";
+  basicGunPlugin,
+  basicSeaPlugin,
+  defaultGunPlugin,
+  defaultSeaPlugin,
+  defaultAxePlugin,
+  defaultBrowserPlugin,
+
+  NoDebugger,
+  ConsoleDebugger,
+  StoreDebugger
+} from './index.js'
 
 export {
-	GunEnvironment,
+  GunEnvironment,
 
-	basicGunPlugin,
-	basicSeaPlugin,
-	defaultGunPlugin,
-	defaultSeaPlugin,
-	defaultAxePlugin,
-	defaultBrowserPlugin,
-	
-	NoDebugger,
-	ConsoleDebugger,
-	StoreDebugger,
-};
+  basicGunPlugin,
+  basicSeaPlugin,
+  defaultGunPlugin,
+  defaultSeaPlugin,
+  defaultAxePlugin,
+  defaultBrowserPlugin,
+
+  NoDebugger,
+  ConsoleDebugger,
+  StoreDebugger
+}

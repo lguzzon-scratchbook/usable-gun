@@ -6,29 +6,31 @@
  */
 
 // Capture functions and values
-const highShift = 2 ** 32;
-const highMask = ( 2 ** (53 - 32) ) - 1;
+const highShift = 2 ** 32
+const highMask = (2 ** (53 - 32)) - 1
 
 /**
  * Returns a random number between 0 (inclusive) and 1 (exclusive).
  * @returns {number} - A random number between 0 (inclusive) and 1 (exclusive).
  */
-function mathRandomCrypto(){
+function mathRandomCrypto () {
+  // Get random bits for numerator
+  const array = new Uint32Array(2)
+  crypto.getRandomValues(array)
 
-	// Get random bits for numerator
-	const array = new Uint32Array(2);
-	crypto.getRandomValues(array);
+  const numerator = ((array[0] & highMask) * highShift) + array[1]
 
-	const numerator = ((array[0] & highMask) * highShift) + array[1];
+  // Divide by maximum-value denominator
+  const denominator = Number.MAX_SAFE_INTEGER + 1
 
-	// Divide by maximum-value denominator
-	const denominator = Number.MAX_SAFE_INTEGER + 1;
-
-	return numerator / denominator;
+  return numerator / denominator
 }
 
-export default function ({ library }){
-
-	library.mathRandom = mathRandomCrypto;
-
+/**
+ *
+ * @param root0
+ * @param root0.library
+ */
+export default function ({ library }) {
+  library.mathRandom = mathRandomCrypto
 }

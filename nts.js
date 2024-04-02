@@ -79,9 +79,7 @@ export default function (__usable_environment) {
         __usable_globalThis.debug.log(connection.offset)
         Gun.state.drift += connection.offset / (connections.length + smooth)
         __usable_globalThis.debug.log(
-					`Update time by local: ${connection.offset} / ${
-						connections.length + smooth
-					}`
+					`Update time by local: ${connection.offset} / ${connections.length + smooth}`
         )
       }
 

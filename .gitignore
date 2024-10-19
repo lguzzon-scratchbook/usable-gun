@@ -1,9 +1,12 @@
+!.env.example
 .DS_Store
-node_modules
-/radata
-/gunSource
-*.tgz
 .env
 .env.*
-!.env.example
+*.tgz
+/gunSource
+/radata
+bun.lockb
+node_modules
+package-lock.json
+reports/report.md
 stats.radata

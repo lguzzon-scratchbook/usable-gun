@@ -61,6 +61,8 @@
     "scripts": {
         "apis": "bun rebuild/upgradeApis.js",
         "clean": "bun rebuild/cleanup.js",
+        "commit": "bun pm cache rm && bun x --bun -y -p https://github.com/lguzzon-scratchbook/ai-commit ai-commit -- --force",
+        "commit:all": "bun commit -- --all",
         "copy": "bun rebuild/copySource.js",
         "license": "bun rebuild/updateLicense.js",
         "lint": "bun x --bun eslint . --fix ; bun x --bun -y standard . --fix",

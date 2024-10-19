@@ -5,25 +5,9 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - name: Setup Git
-    before: |
-      usableLib/system/gitConfig.sh
-      git gfi
-
-  - name: Install Bun
-    before: |
-      curl -fsSL https://bun.sh/install | bash
-      source /home/gitpod/.bashrc
-      gp sync-done installBun
-
-  - name: Install Node
-    before: |
-      nvm install 23
-      nvm use 23
-      gp sync-done installNode
-
-  - name: Project install
+  - before: |
+      usableLib/system/gitConfig.sh && git gfi
+      curl -fsSL https://bun.sh/install | bash && source /home/gitpod/.bashrc
+      nvm install 23 && nvm use 23
     init: |
-      gp sync-await installNode
-      gp sync-await installBun
       bun install

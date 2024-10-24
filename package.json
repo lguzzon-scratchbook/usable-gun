@@ -6,13 +6,13 @@
     "description": "Gun with best practices",
     "devDependencies": {
         "@atjn/eslint-config": "^8.0.0",
-        "@babel/core": "^7.25.8",
+        "@babel/core": "^7.25.9",
         "@types/babel__core": "^7.20.5",
         "@types/fs-extra": "^11.0.4",
         "@types/ws": "^8.5.12",
         "babel-plugin-minify-dead-code-elimination": "^0.5.2",
         "chalk": "^5.3.0",
-        "eslint": "^8.44.0",
+        "eslint": "^8.57.1",
         "fs-extra": "^11.2.0",
         "gun": "^0.2020.1240",
         "lebab": "^3.2.4",
@@ -75,5 +75,8 @@
     },
     "type": "module",
     "types": "index.d.ts",
-    "version": "0.202002.124001"
+    "version": "0.202002.124001",
+    "trustedDependencies": [
+        "aws-sdk"
+    ]
 }

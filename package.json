@@ -65,18 +65,23 @@
         "commit:all": "bun commit -- --all",
         "copy": "bun rebuild/copySource.js",
         "license": "bun rebuild/updateLicense.js",
-        "lint": "bun x --bun eslint . --fix ; bun x --bun -y standard . --fix",
+        "lint": "bun lint:biome",
+        "lint:biome": "bun x -y @biomejs/biome check --write ./*.js ./src/*.js ./lib/*.js ./sea/*.js",
+        "lint:biome:unsafe": "bun x -y @biomejs/biome check --write --unsafe ./lib/*.js ./sea/*.js",
+        "lint:eslint": "bun x --bun -y eslint --fix ./*.js ./src/*.js ./lib/*.js ./sea/*.js",
         "lint:nofix": "eslint .",
+        "lint:standard": "bun x --bun -y standard --fix ./*.js ./src/*.js ./lib/*.js ./sea/*.js",
+        "lint:old": "bun x --bun eslint . --fix ; bun x --bun -y standard . --fix",
         "release": "bun run clean && bun run copy && bun run version && bun run license && bun run unbuild && bun run apis && bun run wrap",
         "release:lint": "bun run release && npm run lint",
         "unbuild": "bun rebuild/unbuild.js && bun rebuild/unbuild.js sea && bun rebuild/unbuild.js lib/meta",
         "version": "bun rebuild/updateVersion.js",
         "wrap": "bun rebuild/wrapCode.js"
     },
-    "type": "module",
-    "types": "index.d.ts",
-    "version": "0.202002.124001",
     "trustedDependencies": [
         "aws-sdk"
-    ]
+    ],
+    "type": "module",
+    "types": "index.d.ts",
+    "version": "0.202002.124001"
 }

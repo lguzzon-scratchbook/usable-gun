@@ -1,0 +1,56 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>usable-gun DB Hello</title>
+    <style>
+      body {
+        color: #303438;
+        font-family: sans-serif;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>usable-gun DB Hello World</h1>
+    <p>Open your web console</p>
+    <script type="module">
+      /* global Gun */
+      import { GunEnvironment } from "../../../index.js";
+      import { defaultBrowserPlugin, defaultSeaPlugin } from "../../../index.js"; // Equivalent to importing "gun" in a browser
+      import radixPlugin from "../../../lib/radix.js";
+
+      const gunEnvironment = new GunEnvironment({
+		environmentHint: 'browser'
+		,iContributeToGun: true
+	  })
+
+	  await gunEnvironment.usePlugins([defaultBrowserPlugin, defaultSeaPlugin, radixPlugin])
+
+	  const GunOptions = {
+	    file: 'usable-gun--Storage'
+		// ,peers: ['https://gundb.h3r3t0.win/gun']
+  	  }
+
+      const gun = new gunEnvironment.library.Gun({
+	    ...GunOptions
+	  })
+	  const sea = gunEnvironment.library.SEA
+	  const Gun = gunEnvironment.library.Gun
+
+	  ;(function () {
+        // Reads key 'data'.
+        const data = gun.get('data')
+        // Writes a value to the key 'data'.
+        data.put({ message: 'Hello world! ' + new Date().toLocaleString() })
+        // Listen for real-time change events.
+        data.get('message').on(function (message) {
+          console.log('Message:', message)
+        })
+      })()
+    </script>
+  </body>
+</html>

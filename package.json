@@ -66,6 +66,7 @@
         "copy": "bun rebuild/copySource.js",
         "license": "bun rebuild/updateLicense.js",
         "lint": "bun lint:biome",
+        "test:lint:biome": "bun x -y @biomejs/biome check --fix --unsafe './test'",
         "lint:biome": "bun x -y @biomejs/biome check --write ./*.js ./src/*.js ./lib/*.js ./sea/*.js",
         "lint:biome:unsafe": "bun x -y @biomejs/biome check --write --unsafe ./lib/*.js ./sea/*.js",
         "lint:eslint": "bun x --bun -y eslint --fix ./*.js ./src/*.js ./lib/*.js ./sea/*.js",

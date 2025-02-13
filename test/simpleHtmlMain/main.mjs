@@ -28,7 +28,9 @@ const Gun = gunEnvironment.library.Gun;
 	// Reads key 'data'.
 	const data = gun.get("data");
 	// Writes a value to the key 'data'.
-	data.put({ message: `Hello world! ${new Date().toLocaleString()}` });
+	setInterval(() => {
+		data.put({ message: `Hello world! ${new Date().toLocaleString()}` });
+	}, 2000);
 	// Listen for real-time change events.
 	data.get("message").on((message) => {
 		console.log("Message:", message);

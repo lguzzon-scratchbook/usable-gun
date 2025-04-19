@@ -11,3 +11,4 @@ package-lock.json
 reports/report.md
 stats.radata
 test/simpleHtmlBundle/js/main.js
+bun.lock

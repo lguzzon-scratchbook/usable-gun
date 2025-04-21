@@ -1,38 +1,57 @@
 /* global Gun */
+// Import necessary modules and plugins
 import { GunEnvironment } from "../../index.js";
-import { defaultBrowserPlugin, defaultSeaPlugin } from "../../index.js"; // Equivalent to importing "gun" in a browser
+import { defaultBrowserPlugin, defaultSeaPlugin } from "../../index.js"; // Simulates browser environment imports
 import radixPlugin from "../../lib/radix.js";
 
+// --- Configuration ---
+
+// Initialize the Gun environment
 const gunEnvironment = new GunEnvironment({
 	environmentHint: "browser",
-	iContributeToGun: true,
+	iContributeToGun: true, // Optional: Indicate contribution status
 });
 
+// Define Gun options (e.g., storage, peers)
+const gunOptions = {
+	file: "usable-gun--Storage", // Use Radisk adapter for storage
+	// peers: ['https://example.com/gun'] // Uncomment to add peers
+};
+
+// --- Initialization ---
+
+// Asynchronously load required Gun plugins
 await gunEnvironment.usePlugins([
 	defaultBrowserPlugin,
 	defaultSeaPlugin,
 	radixPlugin,
 ]);
 
-const GunOptions = {
-	file: "usable-gun--Storage",
-	// ,peers: ['https://gundb.h3r3t0.win/gun']
-};
+// Get Gun constructor and SEA module from the environment
+const { Gun: GunConstructor, SEA } = gunEnvironment.library;
 
-const gun = new gunEnvironment.library.Gun({
-	...GunOptions,
+// Create a new Gun instance with the specified options
+const gun = new GunConstructor({
+	...gunOptions,
 });
-const sea = gunEnvironment.library.SEA;
-const Gun = gunEnvironment.library.Gun;
+
+// --- Application Logic ---
+
+// Self-executing function to encapsulate the main logic
 (() => {
-	// Reads key 'data'.
-	const data = gun.get("data");
-	// Writes a value to the key 'data'.
+	// Get a reference to the 'data' node in the graph
+	const dataNode = gun.get("data");
+
+	// Periodically update the 'data' node with a timestamped message
+	const updateInterval = 2000; // milliseconds
 	setInterval(() => {
-		data.put({ message: `Hello world! ${new Date().toLocaleString()}` });
-	}, 2000);
-	// Listen for real-time change events.
-	data.get("message").on((message) => {
+		const timestamp = new Date().toLocaleString();
+		dataNode.put({ message: `Hello world! ${timestamp}` });
+	}, updateInterval);
+
+	// Subscribe to real-time updates on the 'message' field within the 'data' node
+	dataNode.get("message").on((message) => {
+		// Log the updated message to the console
 		console.log("Message:", message);
 	});
 })();

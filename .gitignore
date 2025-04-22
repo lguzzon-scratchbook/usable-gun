@@ -10,5 +10,6 @@ node_modules
 package-lock.json
 reports/report.md
 stats.radata
-test/simpleHtmlBundle/js/main.js
 bun.lock
+test/**/js/main.js
+test/**/dist

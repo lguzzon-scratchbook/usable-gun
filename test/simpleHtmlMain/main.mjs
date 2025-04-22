@@ -1,7 +1,7 @@
 /* global Gun */
-import { GunEnvironment } from "../../../index.js";
-import { defaultBrowserPlugin, defaultSeaPlugin } from "../../../index.js"; // Equivalent to importing "gun" in a browser
-import radixPlugin from "../../../lib/radix.js";
+import { GunEnvironment } from "../../index.js";
+import { defaultBrowserPlugin, defaultSeaPlugin } from "../../index.js"; // Equivalent to importing "gun" in a browser
+import radixPlugin from "../../lib/radix.js";
 
 const gunEnvironment = new GunEnvironment({
 	environmentHint: "browser",

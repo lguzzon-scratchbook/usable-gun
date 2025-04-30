@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>usable-gun DB simpleHtml</title>
+	<title>usable-gun DB simpleHtml-adapter</title>
 	<style>
 		body {
 			color: #303438;
@@ -15,19 +15,20 @@
 </head>
 
 <body>
-	<h1>usable-gun DB simpleHtml</h1>
+	<h1>usable-gun DB simpleHtml Adapter</h1>
 	<p>Open your web console</p>
 	<script type="module">
-		import { gunApp } from "../../../usableLib/util/gunAdapter.js";
+			import { gunSpace } from "../../../usableLib/util/gunAdapter.js";
 
 		// Self-executing function to encapsulate the main logic
 		(async () => {
 			// Get a reference to the 'data' node in the graph
 			const path = 'data'
-			const gun = await gunApp({
+			const dataProperty = 'message'
+			const gun = await gunSpace({
 				gunOptions: {
 					file: "usable-gun--Storage--" + path,
-					localStorage: true
+					localStorage: false
 				}
 			})
 
@@ -35,15 +36,19 @@
 			const updateInterval = 2000 // milliseconds
 			setInterval(() => {
 				const timestamp = new Date().toLocaleString()
-				console.log("Updating message:", timestamp)
+				console.log("Updating " + dataProperty + ":", timestamp)
 				// gun.pathPut(path, { message: `Hello world! ${timestamp}` })
-				gun.pathPut(path + '.message', `Hello world! ${timestamp}`)
+				gun.pathPut(path + '.' + dataProperty, `Hello world! ${timestamp}`)
 			}, updateInterval)
 
 			// Subscribe to real-time updates on the 'message' field within the 'data' node
-			gun.pathOn(path, ({ message }) => {
+			gun.pathOn(path, (data) => {
 				// Log the updated message to the console
-				console.log("Message:", message)
+				console.log("" + dataProperty + ":", data[dataProperty])
+			})
+			gun.pathOn(path + '.' + dataProperty, (data) => {
+				// Log the updated message to the console
+				console.log("" + dataProperty + ":", data[dataProperty])
 			})
 		})();
 

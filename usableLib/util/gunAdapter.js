@@ -19,7 +19,7 @@ import { getRefFromPath } from "./gunUtil.js";
 	*   gun: any,
 	*   sea: any,
 	*   Gun: any,
-	*   appRoot: string,
+	*   gunApp:string,
 	*   ref: any,
 	*   pathRef: (path: string) => any,
 	*   pathValue: (path: string) => Promise<any>,
@@ -27,7 +27,7 @@ import { getRefFromPath } from "./gunUtil.js";
 	*   pathOn: (path: string, cb: (data: any) => void) => any
 	* }>}
 	*/
-async function gunApp({
+async function gunSpace({
 	gunEnvironmentOptions = {
 		environmentHint: "browser",
 		iContributeToGun: true,
@@ -37,7 +37,7 @@ async function gunApp({
 		localStorage: false,
 		// peers: ['https://gundb.h3r3t0.win/gun']
 	},
-	appRoot = "appRoot",
+	gunApp = "appRoot",
 } = {}) {
 	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions);
 
@@ -49,7 +49,7 @@ async function gunApp({
 
 	const { Gun, SEA } = gunEnvironment.library
 	const gun = new Gun(gunOptions)
-	const ref = gun.get(appRoot)
+	const ref = gun.get(gunApp)
 
 	const pathRef = (path) => getRefFromPath(path, ref)
 	const pathValue = async (path) => new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
@@ -63,7 +63,7 @@ async function gunApp({
 		gun,
 		sea: SEA,
 		Gun,
-		appRoot,
+		gunApp,
 		ref,
 		pathRef,
 		pathValue,
@@ -72,4 +72,4 @@ async function gunApp({
 	}
 }
 
-export { gunApp }
+export { gunSpace }

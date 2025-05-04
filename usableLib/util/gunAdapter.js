@@ -6,27 +6,27 @@ import {
 	defaultSeaPlugin,
 } from "../../index.js"
 import radixPlugin from "../../lib/radix.js"
-import { getRefFromPath } from "./gunUtil.js";
+import { getRefFromPath } from "./gunUtil.js"
 
 /**
-	* Initializes and returns a Gun application environment.
-	* @param {Object} [options]
-	* @param {Object} [options.gunEnvironmentOptions]
-	* @param {Object} [options.gunOptions]
-	* @param {string} [options.appRoot]
-	* @returns {Promise<{
-	*   gunEnvironment: any,
-	*   gun: any,
-	*   sea: any,
-	*   Gun: any,
-	*   appRoot: string,
-	*   ref: any,
-	*   pathRef: (path: string) => any,
-	*   pathValue: (path: string) => Promise<any>,
-	*   pathPut: (path: string, value: any) => any,
-	*   pathOn: (path: string, cb: (data: any) => void) => any
-	* }>}
-	*/
+ * Initializes and returns a Gun application environment.
+ * @param {Object} [options]
+ * @param {Object} [options.gunEnvironmentOptions]
+ * @param {Object} [options.gunOptions]
+ * @param {string} [options.appRoot]
+ * @returns {Promise<{
+ *   gunEnvironment: any,
+ *   gun: any,
+ *   sea: any,
+ *   Gun: any,
+ *   appRoot: string,
+ *   ref: any,
+ *   pathRef: (path: string) => any,
+ *   pathValue: (path: string) => Promise<any>,
+ *   pathPut: (path: string, value: any) => any,
+ *   pathOn: (path: string, cb: (data: any) => void) => any
+ * }>}
+ */
 async function gunApp({
 	gunEnvironmentOptions = {
 		environmentHint: "browser",
@@ -39,7 +39,7 @@ async function gunApp({
 	},
 	appRoot = "appRoot",
 } = {}) {
-	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions);
+	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions)
 
 	await gunEnvironment.usePlugins([
 		defaultBrowserPlugin,
@@ -54,9 +54,7 @@ async function gunApp({
 	const pathRef = (path) => getRefFromPath(path, ref)
 	const pathValue = async (path) => new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
 	const pathPut = (path, value) => pathRef(path).put(value)
-	const pathOn = (path, cb) => {
-		return pathRef(path).on((data) => cb(data))
-	};
+	const pathOn = (path, cb) => pathRef(path).on((data) => cb(data))
 
 	return {
 		gunEnvironment,

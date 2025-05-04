@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>usable-gun DB simpleHtml</title>
+	<title>usable-gun DB simpleHtml-adapter</title>
 	<style>
 		body {
 			color: #303438;
@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<h1>usable-gun DB simpleHtml</h1>
+	<h1>usable-gun DB simpleHtml-adapter</h1>
 	<p>Open your web console</p>
 	<script type="module">
 		import { gunApp } from "../../../usableLib/util/gunAdapter.js";
@@ -27,7 +27,7 @@
 			const gun = await gunApp({
 				gunOptions: {
 					file: "usable-gun--Storage--" + path,
-					localStorage: true
+					localStorage: false
 				}
 			})
 

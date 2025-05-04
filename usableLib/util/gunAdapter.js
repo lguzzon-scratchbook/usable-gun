@@ -55,6 +55,7 @@ async function gunApp({
 	const pathValue = async (path) => new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
 	const pathPut = (path, value) => pathRef(path).put(value)
 	const pathOn = (path, cb) => pathRef(path).on((data) => cb(data))
+	const pathOff = (path) => pathRef(path).off()
 
 	return {
 		gunEnvironment,
@@ -67,6 +68,7 @@ async function gunApp({
 		pathValue,
 		pathPut,
 		pathOn,
+		pathOff
 	}
 }
 

@@ -34,13 +34,13 @@
 
 			// Periodically update the 'data' node with a timestamped message
 			const updateInterval = 2000 // milliseconds
-			setInterval(() => {
+			setInterval(async () => {
 				const timestamp = new Date().toLocaleString()
 				console.log("Updating " + dataProperty + ":", timestamp)
 				// gun.pathPut(path, { message: `Hello world! ${timestamp}` })
 				gun.pathPut(path + '.' + dataProperty, `Hello world! ${timestamp}`)
+				console.log(await gun.pathValue(path))
 			}, updateInterval)
-
 			// Subscribe to real-time updates on the 'message' field within the 'data' node
 			gun.pathOn(path, (data) => {
 				// Log the updated message to the console
@@ -48,7 +48,7 @@
 			})
 			gun.pathOn(path + '.' + dataProperty, (data) => {
 				// Log the updated message to the console
-				console.log("" + dataProperty + ":", data[dataProperty])
+				console.log("" + dataProperty + ":", data)
 			})
 		})();
 

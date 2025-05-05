@@ -16,6 +16,7 @@ await gunEnvironment.usePlugins([
 
 const GunOptions = {
 	file: "usable-gun--Storage",
+	localStorage: false,
 	// ,peers: ['https://gundb.h3r3t0.win/gun']
 };
 
@@ -29,7 +30,9 @@ const Gun = gunEnvironment.library.Gun;
 	const data = gun.get("data");
 	// Writes a value to the key 'data'.
 	setInterval(() => {
-		data.put({ message: `Hello world! ${new Date().toLocaleString()}` });
+		const timestamp = new Date().toLocaleString();
+		console.log("Updating message:", timestamp);
+		data.put({ message: `Hello world! ${timestamp}` });
 	}, 2000);
 	// Listen for real-time change events.
 	data.get("message").on((message) => {

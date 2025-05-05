@@ -6,7 +6,7 @@ import {
 	defaultSeaPlugin,
 } from "../../index.js"
 import radixPlugin from "../../lib/radix.js"
-import { getRefFromPath } from "./gunUtil.js";
+import { getRefFromPath } from "./gunUtil.js"
 
 /**
 	* Initializes and returns a Gun application environment.
@@ -39,7 +39,7 @@ async function gunSpace({
 	},
 	gunApp = "appRoot",
 } = {}) {
-	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions);
+	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions)
 
 	await gunEnvironment.usePlugins([
 		defaultBrowserPlugin,
@@ -54,9 +54,8 @@ async function gunSpace({
 	const pathRef = (path) => getRefFromPath(path, ref)
 	const pathValue = async (path) => new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
 	const pathPut = (path, value) => pathRef(path).put(value)
-	const pathOn = (path, cb) => {
-		return pathRef(path).on((data) => cb(data))
-	};
+	const pathOn = (path, cb) => pathRef(path).on((data) => cb(data))
+	const pathOff = (path) => pathRef(path).off()
 
 	return {
 		gunEnvironment,
@@ -69,6 +68,7 @@ async function gunSpace({
 		pathValue,
 		pathPut,
 		pathOn,
+		pathOff
 	}
 }
 

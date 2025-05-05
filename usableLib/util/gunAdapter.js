@@ -8,6 +8,27 @@ import {
 import radixPlugin from "../../lib/radix.js"
 import { getRefFromPath } from "./gunUtil.js"
 
+const cGunEnvironmentOptions = {
+	environmentHint: "browser",
+	iContributeToGun: true,
+}
+
+const cGunPlugins = [defaultBrowserPlugin, defaultSeaPlugin, radixPlugin,]
+
+async function gunEnv({
+	gunEnvironmentOptions = cGunEnvironmentOptions,
+	gunPlugins = cGunPlugins,
+} = {}) {
+	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions)
+	await gunEnvironment.usePlugins(gunPlugins)
+	const { Gun, SEA } = gunEnvironment.library
+	return {
+		gunEnvironment,
+		Gun,
+		SEA,
+	}
+}
+
 /**
 	* Initializes and returns a Gun application environment.
 	* @param {Object} [options]
@@ -28,10 +49,8 @@ import { getRefFromPath } from "./gunUtil.js"
 	* }>}
 	*/
 async function gunSpace({
-	gunEnvironmentOptions = {
-		environmentHint: "browser",
-		iContributeToGun: true,
-	},
+	gunEnvironmentOptions = cGunEnvironmentOptions,
+	gunPlugins = cGunPlugins,
 	gunOptions = {
 		// file: "usable-gun--Storage",
 		localStorage: false,
@@ -39,16 +58,8 @@ async function gunSpace({
 	},
 	gunApp = "appRoot",
 } = {}) {
-	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions)
-
-	await gunEnvironment.usePlugins([
-		defaultBrowserPlugin,
-		defaultSeaPlugin,
-		radixPlugin,
-	])
-
-	const { Gun, SEA } = gunEnvironment.library
-	const gun = new Gun(gunOptions)
+	const gunEnvironment = await gunEnv({gunEnvironmentOptions, gunPlugins})
+	const gun = new gunEnvironment.Gun(gunOptions)
 	const ref = gun.get(gunApp)
 
 	const pathRef = (path) => getRefFromPath(path, ref)
@@ -60,8 +71,6 @@ async function gunSpace({
 	return {
 		gunEnvironment,
 		gun,
-		sea: SEA,
-		Gun,
 		gunApp,
 		ref,
 		pathRef,
@@ -72,4 +81,4 @@ async function gunSpace({
 	}
 }
 
-export { gunSpace }
+export { gunEnv , gunSpace }

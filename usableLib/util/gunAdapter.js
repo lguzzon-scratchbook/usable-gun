@@ -6,67 +6,71 @@ import {
 	defaultSeaPlugin,
 } from "../../index.js"
 import radixPlugin from "../../lib/radix.js"
-import { getRefFromPath } from "./gunUtil.js"
+import radiskPlugin from "../../lib/radisk.js"
+import storePlugin from "../../lib/store.js"
+import rmemPlugin from "../../lib/rmem.js"
+import { getRefFromPath } from "./gunUtil.js";
 
 const cGunEnvironmentOptions = {
 	environmentHint: "browser",
 	iContributeToGun: true,
-}
+};
 
-const cGunPlugins = [defaultBrowserPlugin, defaultSeaPlugin, radixPlugin,]
+const cGunPlugins = [defaultBrowserPlugin, defaultSeaPlugin]
+const cGunStorePlugins = [radixPlugin, radiskPlugin, storePlugin, rmemPlugin];
 
 async function gunEnv({
 	gunEnvironmentOptions = cGunEnvironmentOptions,
-	gunPlugins = cGunPlugins,
+	gunEnvironmentPlugins = cGunPlugins,
 } = {}) {
 	const gunEnvironment = new GunEnvironment(gunEnvironmentOptions)
-	await gunEnvironment.usePlugins(gunPlugins)
-	const { Gun, SEA } = gunEnvironment.library
+	await gunEnvironment.usePlugins(gunEnvironmentPlugins)
+	const { Gun, SEA } = gunEnvironment.library;
 	return {
-		gunEnvironment,
+		Env: gunEnvironment,
 		Gun,
 		SEA,
 	}
 }
-
-/**
-	* Initializes and returns a Gun application environment.
-	* @param {Object} [options]
-	* @param {Object} [options.gunEnvironmentOptions]
-	* @param {Object} [options.gunOptions]
-	* @param {string} [options.appRoot]
-	* @returns {Promise<{
-	*   gunEnvironment: any,
-	*   gun: any,
-	*   sea: any,
-	*   Gun: any,
-	*   gunApp:string,
-	*   ref: any,
-	*   pathRef: (path: string) => any,
-	*   pathValue: (path: string) => Promise<any>,
-	*   pathPut: (path: string, value: any) => any,
-	*   pathOn: (path: string, cb: (data: any) => void) => any
-	* }>}
-	*/
 async function gunSpace({
 	gunEnvironmentOptions = cGunEnvironmentOptions,
 	gunPlugins = cGunPlugins,
+	gunStorePlugins = cGunStorePlugins,
 	gunOptions = {
-		// file: "usable-gun--Storage",
+		file: "gunSpace--Storage",
 		localStorage: false,
 		// peers: ['https://gundb.h3r3t0.win/gun']
 	},
 	gunApp = "appRoot",
 } = {}) {
-	const gunEnvironment = await gunEnv({gunEnvironmentOptions, gunPlugins})
-	const gun = new gunEnvironment.Gun(gunOptions)
-	const ref = gun.get(gunApp)
+	const usingLocalStorage = gunOptions?.localStorage || false
+	const gunEnvironmentPlugins = gunPlugins.concat(
+		usingLocalStorage ? [] : gunStorePlugins,
+	)
+	const gunEnvironment = await gunEnv({
+		gunEnvironmentOptions,
+		gunEnvironmentPlugins,
+	})
+	const gunOptionsFinal = {
+		...gunOptions,
+	}
+	if (!usingLocalStorage) {
+		gunOptionsFinal.localStorage = false
+		gunOptionsFinal.store = gunEnvironment.Env.library.Rmem()
+	}
+	gunOptionsFinal.file = gunOptions.file || `gunSpace--Storage--${gunApp}`
+	const gun = new gunEnvironment.Gun(gunOptionsFinal)
+	const ref = gun.get(gunApp);
 
 	const pathRef = (path) => getRefFromPath(path, ref)
-	const pathValue = async (path) => new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
+	const pathValue = async (path) =>
+		new Promise((resolve) => pathRef(path).once((data) => resolve(data)))
 	const pathPut = (path, value) => pathRef(path).put(value)
-	const pathOn = (path, cb) => pathRef(path).on((data) => cb(data))
-	const pathOff = (path) => pathRef(path).off()
+	const pathOn = (path, cb) => {
+		const cRef = pathRef(path)
+		return cRef.on((data) => cb(data))
+	}
+	const pathOff = (path) => pathRef(path).off();
 
 	return {
 		gunEnvironment,
@@ -77,8 +81,8 @@ async function gunSpace({
 		pathValue,
 		pathPut,
 		pathOn,
-		pathOff
+		pathOff,
 	}
 }
 
-export { gunEnv , gunSpace }
+export { gunEnv, gunSpace }

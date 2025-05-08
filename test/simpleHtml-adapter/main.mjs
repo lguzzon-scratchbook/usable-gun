@@ -1,10 +1,10 @@
-import { gunSpace } from "../../usableLib/util/gunAdapter.js"
+import { gunApp } from "../../usableLib/util/gunAdapter.js"
 
 let counter = -1;
 
 // Get a reference to the 'data' node in the graph
 const path = 'data'
-const gun = await gunSpace({
+const gun = await gunApp({
 	gunOptions: {
 		// file: `usable-gun--Storage--${path}`,
 	}

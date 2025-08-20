@@ -16,12 +16,12 @@ export default function (__usable_environment) {
 	function State() {
 		var t = +new Date();
 		if (last < t) {
-			return (N = 0), (last = t + State.drift);
+			return ((N = 0), (last = t + State.drift));
 		}
 		return (last = t + (N += 1) / D + State.drift);
 	}
 	State.drift = 0;
-	var NI = Number.NEGATIVE_INFINITY; // WARNING! In the future, on machines that are D times faster than 2016AD machines, you will want to increase D by another several orders of magnitude so the processing speed never out paces the decimal resolution (increasing an integer effects the state accuracy).
+	var NI = -Infinity; // WARNING! In the future, on machines that are D times faster than 2016AD machines, you will want to increase D by another several orders of magnitude so the processing speed never out paces the decimal resolution (increasing an integer effects the state accuracy).
 	var N = 0;
 	var D = 999;
 	var last = NI;

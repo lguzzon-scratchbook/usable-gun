@@ -1,22 +1,22 @@
+import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
+import gunShimPlugin from "./src/shim.js";
+import gunOntoPlugin from "./src/onto.js";
+import gunValidPlugin from "./src/valid.js";
+import gunStatePlugin from "./src/state.js";
+import gunDupPlugin from "./src/dup.js";
 import gunAskPlugin from "./src/ask.js";
+import gunRootPlugin from "./src/root.js";
 import gunBackPlugin from "./src/back.js";
 import gunChainPlugin from "./src/chain.js";
-import gunDupPlugin from "./src/dup.js";
 import gunGetPlugin from "./src/get.js";
-import gunIndexPlugin from "./src/index.js";
-import gunLocalStoragePlugin from "./src/localStorage.js";
-import gunMapPlugin from "./src/map.js";
-import gunMeshPlugin from "./src/mesh.js";
-import gunOnPlugin from "./src/on.js";
-import gunOntoPlugin from "./src/onto.js";
 import gunPutPlugin from "./src/put.js";
-import gunRootPlugin from "./src/root.js";
+import gunIndexPlugin from "./src/index.js";
+import gunOnPlugin from "./src/on.js";
+import gunMapPlugin from "./src/map.js";
 import gunSetPlugin from "./src/set.js";
-import gunShimPlugin from "./src/shim.js";
-import gunStatePlugin from "./src/state.js";
-import gunValidPlugin from "./src/valid.js";
+import gunMeshPlugin from "./src/mesh.js";
 import gunWebsocketPlugin from "./src/websocket.js";
-import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
+import gunLocalStoragePlugin from "./src/localStorage.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -104,9 +104,7 @@ export default function (__usable_environment) {
 				DEP("num");
 				return (
 					!list_is(n) &&
-					(n - Number.parseFloat(n) + 1 >= 0 ||
-						Number.POSITIVE_INFINITY === n ||
-						Number.NEGATIVE_INFINITY === n)
+					(n - parseFloat(n) + 1 >= 0 || Infinity === n || -Infinity === n)
 				);
 			},
 		};
@@ -251,7 +249,7 @@ export default function (__usable_environment) {
 			Type.obj.put ||
 			((o, k, v) => {
 				DEP("obj.put");
-				return ((o || {})[k] = v), o;
+				return (((o || {})[k] = v), o);
 			});
 		Type.obj.has =
 			Type.obj.has ||
@@ -424,7 +422,7 @@ export default function (__usable_environment) {
 			if (v === null) {
 				return true;
 			} // "deletes", nulling out keys.
-			if (v === Number.POSITIVE_INFINITY) {
+			if (v === Infinity) {
 				return false;
 			} // we want this to be, but JSON does not support it, sad face.
 			if (
@@ -455,14 +453,15 @@ export default function (__usable_environment) {
 				return false; // the value was not a valid soul relation.
 			};
 			function map(s, k) {
-				if (this.id) {
-					return (this.id = false);
+				var o = this; // map over the object...
+				if (o.id) {
+					return (o.id = false);
 				} // if ID is already defined AND we're still looping through the object, it is considered invalid.
 				if (k == rel_ && text_is(s)) {
 					// the key should be '#' and have a text value.
-					this.id = s; // we found the soul!
+					o.id = s; // we found the soul!
 				} else {
-					return (this.id = false); // if there exists anything else on the object that isn't the soul, then it is considered invalid.
+					return (o.id = false); // if there exists anything else on the object that isn't the soul, then it is considered invalid.
 				}
 			}
 		})();
@@ -735,46 +734,47 @@ export default function (__usable_environment) {
 				return at;
 			}
 			function map(v, k, n) {
-				var env = this.env;
+				var at = this;
+				var env = at.env;
 				var is;
 				var tmp;
 				if (Node._ === k && obj_has(v, Val.link._)) {
 					return n._; // TODO: Bug?
 				}
-				if (!(is = valid(v, k, n, this, env))) {
+				if (!(is = valid(v, k, n, at, env))) {
 					return;
 				}
 				if (!k) {
-					this.node = this.node || n || {};
+					at.node = at.node || n || {};
 					if (obj_has(v, Node._) && Node.soul(v)) {
 						// ? for safety ?
-						this.node._ = obj_copy(v._);
+						at.node._ = obj_copy(v._);
 					}
-					this.node = Node.soul.ify(this.node, Val.link.is(this.link));
-					this.link = this.link || Val.link.ify(Node.soul(this.node));
+					at.node = Node.soul.ify(at.node, Val.link.is(at.link));
+					at.link = at.link || Val.link.ify(Node.soul(at.node));
 				}
 				if ((tmp = env.map)) {
-					tmp.call(env.as || {}, v, k, n, this);
+					tmp.call(env.as || {}, v, k, n, at);
 					if (obj_has(n, k)) {
 						v = n[k];
 						if (undefined === v) {
 							obj_del(n, k);
 							return;
 						}
-						if (!(is = valid(v, k, n, this, env))) {
+						if (!(is = valid(v, k, n, at, env))) {
 							return;
 						}
 					}
 				}
 				if (!k) {
-					return this.node;
+					return at.node;
 				}
 				if (true === is) {
 					return v;
 				}
 				tmp = node(env, {
 					obj: v,
-					path: this.path.concat(k),
+					path: at.path.concat(k),
 				});
 				if (!tmp.node) {
 					return;
@@ -782,12 +782,13 @@ export default function (__usable_environment) {
 				return tmp.link; //{'#': Node.soul(tmp.node)};
 			}
 			function soul(id) {
-				var prev = Val.link.is(this.link);
-				var graph = this.env.graph;
-				this.link = this.link || Val.link.ify(id);
-				this.link[Val.link._] = id;
-				if (this.node && this.node[Node._]) {
-					this.node[Node._][Val.link._] = id;
+				var at = this;
+				var prev = Val.link.is(at.link);
+				var graph = at.env.graph;
+				at.link = at.link || Val.link.ify(id);
+				at.link[Val.link._] = id;
+				if (at.node && at.node[Node._]) {
+					at.node[Node._][Val.link._] = id;
 				}
 				if (obj_has(graph, prev)) {
 					graph[id] = graph[prev];

@@ -37,8 +37,10 @@ export default function (__usable_environment) {
 				}
 			: gunPlugin(__usable_environment);
 	Gun.chain.then = function (cb, opt) {
+		var gun = this;
+
 		var p = new Promise((res) => {
-			this.once(res, opt);
+			gun.once(res, opt);
 		});
 
 		return cb ? p.then(cb) : p;

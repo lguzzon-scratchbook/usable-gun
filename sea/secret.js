@@ -1,6 +1,6 @@
 import rootPlugin from "./root.js";
-import settingsPlugin from "./settings.js";
 import shimPlugin from "./shim.js";
+import settingsPlugin from "./settings.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 

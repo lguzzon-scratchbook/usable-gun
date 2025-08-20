@@ -44,15 +44,16 @@ export default function (__usable_environment) {
 				}
 				return gun;
 			}
-			var cat = this._;
+			var back = this;
+			var cat = back._;
 			var next = cat.next || empty;
 			if (!(gun = next[key])) {
-				gun = key && cache(key, this);
+				gun = key && cache(key, back);
 			}
 			gun = gun && gun.$;
 		} else if ("function" == typeof key) {
 			if (true === cb) {
-				return soul(this, key, cb, as), this;
+				return (soul(this, key, cb, as), this);
 			}
 			gun = this;
 			var cat = gun._;

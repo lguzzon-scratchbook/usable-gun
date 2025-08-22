@@ -23,10 +23,7 @@ export default function (__usable_environment) {
 		"boolean" === typeof v ||
 		// we want +/- Infinity to be, but JSON does not support it, sad face.
 		// can you guess what v === v checks for? ;)
-		("number" === typeof v &&
-			v != Number.POSITIVE_INFINITY &&
-			v != Number.NEGATIVE_INFINITY &&
-			v === v) ||
+		("number" === typeof v && v != Infinity && v != -Infinity && v === v) ||
 		(!!v && "string" == typeof v["#"] && Object.keys(v).length === 1 && v["#"]);
 	__usable_environment.exports.gun.valid = __usable_module.exports;
 	return __usable_module.exports;

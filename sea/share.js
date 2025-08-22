@@ -63,8 +63,9 @@ export default function (__usable_environment) {
 		__usable_globalThis.debug.log(
 			"user.delete() IS DEPRECATED AND WILL BE MOVED TO A MODULE!!!",
 		);
-		var root = this.back(-1);
-		var user = this.back("user");
+		var gun = this;
+		var root = gun.back(-1);
+		var user = gun.back("user");
 		try {
 			user.auth(alias, pass, () => {
 				(user.is || {}).pub; // Delete user data
@@ -80,7 +81,7 @@ export default function (__usable_environment) {
 		} catch (e) {
 			Gun.log("User.delete failed! Error:", e);
 		}
-		return this;
+		return gun;
 	};
 	User.prototype.alive = async function () {
 		__usable_globalThis.debug.log("user.alive() IS DEPRECATED!!!");
@@ -123,10 +124,11 @@ export default function (__usable_environment) {
 		__usable_globalThis.debug.log(
 			"`.grant` API MAY BE DELETED OR CHANGED OR RENAMED, DO NOT USE!",
 		);
-		var user = this.back(-1).user();
+		var gun = this;
+		var user = gun.back(-1).user();
 		var pair = user._.sea;
 		var path = "";
-		this.back((at) => {
+		gun.back((at) => {
 			if (at.is) {
 				return;
 			}
@@ -149,16 +151,17 @@ export default function (__usable_environment) {
 			enc = await SEA.encrypt(sec, dh);
 			user.get("grant").get(pub).get(path).put(enc, cb);
 		})();
-		return this;
+		return gun;
 	};
 	User.prototype.secret = function (data, cb) {
 		__usable_globalThis.debug.log(
 			"`.secret` API MAY BE DELETED OR CHANGED OR RENAMED, DO NOT USE!",
 		);
-		var user = this.back(-1).user();
+		var gun = this;
+		var user = gun.back(-1).user();
 		var pair = user.pair();
 		var path = "";
-		this.back((at) => {
+		gun.back((at) => {
 			if (at.is) {
 				return;
 			}
@@ -174,9 +177,9 @@ export default function (__usable_environment) {
 				user.get("trust").get(pair.pub).get(path).put(enc);
 			}
 			enc = await SEA.encrypt(data, sec);
-			this.put(enc, cb);
+			gun.put(enc, cb);
 		})();
-		return this;
+		return gun;
 	};
 
 	/**

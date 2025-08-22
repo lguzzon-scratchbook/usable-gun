@@ -1,5 +1,5 @@
-import gunPlugin from "../gun.js";
 import seaPlugin from "./sea.js";
+import gunPlugin from "../gun.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -40,7 +40,8 @@ export default function (__usable_environment) {
 	// let's extend the gun chain with a `user` function.
 	// only one user can be logged in at a time, per gun instance.
 	Gun.chain.user = function (pub) {
-		var root = this.back(-1);
+		var gun = this;
+		var root = gun.back(-1);
 		var user;
 		if (pub) {
 			pub = SEA.opt.pub((pub._ || "")["#"]) || pub;
@@ -52,7 +53,7 @@ export default function (__usable_environment) {
 		var root = root._;
 		var at = root;
 		var uuid = at.opt.uuid || lex;
-		(at = (user = at.user = this.chain(new User()))._).opt = {};
+		(at = (user = at.user = gun.chain(new User()))._).opt = {};
 		at.opt.uuid = (cb) => {
 			var id = uuid();
 			var pub = root.user;

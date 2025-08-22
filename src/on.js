@@ -32,7 +32,10 @@ export default function (__usable_environment) {
 
 	var Gun = indexPlugin(__usable_environment);
 	Gun.chain.on = function (tag, arg, eas, as) {
-		var cat = this._;
+		// don't rewrite!
+		var gun = this;
+
+		var cat = gun._;
 		var root = cat.root;
 		var act;
 		if (typeof tag === "string") {
@@ -43,7 +46,7 @@ export default function (__usable_environment) {
 			if (eas && eas.$) {
 				(eas.subs || (eas.subs = [])).push(act);
 			}
-			return this;
+			return gun;
 		}
 		var opt = arg;
 		(opt =
@@ -58,7 +61,7 @@ export default function (__usable_environment) {
 		//opt.last = {};
 
 		// can we assign this to the at instead, like in once?
-		this.get(tag, opt);
+		gun.get(tag, opt);
 		/*gun.get(function on(data,key,msg,eve){ var $ = this;
     	if(tmp = root.hatch){ // quick hack!
     		if(wait[$._.id]){ return } wait[$._.id] = 1;
@@ -89,7 +92,7 @@ export default function (__usable_environment) {
     (cat.act||(cat.act={}))[id = String.random(7)] = one;
     one.off = function(){ one.stun = 1; if(!cat.act){ return } delete cat.act[id] }
     cat.on('out', {get: {}});*/
-		return this;
+		return gun;
 	};
 	// Rules:
 	// 1. If cached, should be fast, but not read while write.
@@ -100,12 +103,13 @@ export default function (__usable_environment) {
 		if (!cb) {
 			return none(this, opt);
 		}
-		var cat = this._;
+		var gun = this;
+		var cat = gun._;
 		var root = cat.root;
 		var data = cat.put;
 		var id = __usable_globalThis.stringRandom(7);
 		var tmp;
-		this.get(
+		gun.get(
 			function (data, key, msg, eve) {
 				var $ = this;
 				var at = $._;
@@ -164,7 +168,7 @@ export default function (__usable_environment) {
 				on: 1,
 			},
 		);
-		return this;
+		return gun;
 	};
 	function none(gun, opt, chain) {
 		Gun.log.once(
@@ -178,7 +182,10 @@ export default function (__usable_environment) {
 		return chain;
 	}
 	Gun.chain.off = function () {
-		var at = this._;
+		// make off more aggressive. Warning, it might backfire!
+		var gun = this;
+
+		var at = gun._;
 		var tmp;
 		var cat = at.back;
 		if (!cat) {
@@ -219,6 +226,6 @@ export default function (__usable_environment) {
 			});
 		}
 		at.on("off", {});
-		return this;
+		return gun;
 	};
 }

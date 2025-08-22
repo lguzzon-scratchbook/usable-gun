@@ -32,26 +32,29 @@ export default function (__usable_environment) {
 
 	var Gun = rootPlugin(__usable_environment);
 	Gun.chain.put = function (data, cb, as) {
-		var at = this._;
+		// I rewrote it :)
+		var gun = this;
+
+		var at = gun._;
 		var root = at.root;
 		as = as || {};
 		as.root = at.root;
 		as.run || (as.run = root.once);
 		stun(as, at.id); // set a flag for reads to check if this chain is writing.
 		as.ack = as.ack || cb;
-		as.via = as.via || this;
+		as.via = as.via || gun;
 		as.data = as.data || data;
 		as.soul || (as.soul = at.soul || ("string" == typeof cb && cb));
 		var s = (as.state = as.state || Gun.state());
 		if ("function" == typeof data) {
 			data((d) => {
 				as.data = d;
-				this.put(undefined, undefined, as);
+				gun.put(undefined, undefined, as);
 			});
-			return this;
+			return gun;
 		}
 		if (!as.soul) {
-			return get(as), this;
+			return get(as), gun;
 		}
 		as.$ = root.$.get(as.soul); // TODO: This may not allow user chaining and similar?
 		as.todo = [
@@ -204,7 +207,7 @@ export default function (__usable_environment) {
 			}
 			as.turn(walk);
 		})();
-		return this;
+		return gun;
 	};
 	function stun(as, id) {
 		if (!id) {

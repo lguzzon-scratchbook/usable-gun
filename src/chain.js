@@ -35,13 +35,14 @@ export default function (__usable_environment) {
 	// language, consider implementing an easier API to build.
 	var Gun = rootPlugin(__usable_environment);
 	Gun.chain.chain = function (sub) {
-		var at = this._;
-		var chain = new (sub || this).constructor(this);
+		var gun = this;
+		var at = gun._;
+		var chain = new (sub || gun).constructor(gun);
 		var cat = chain._;
 		var root;
 		cat.root = root = at.root;
 		cat.id = ++root.once;
-		cat.back = this._;
+		cat.back = gun._;
 		cat.on = Gun.on;
 		cat.on("in", Gun.on.in, cat); // For 'in' if I add my own listeners to each then I MUST do it before in gets called. If I listen globally for all incoming data instead though, regardless of individual listeners, I can transform the data there and then as well.
 		cat.on("out", Gun.on.out, cat); // However for output, there isn't really the global option. I must listen by adding my own listener individually BEFORE this one is ever called.
@@ -181,7 +182,7 @@ export default function (__usable_environment) {
 		var soul = tmp["#"];
 		var key = tmp["."];
 		var change = undefined !== tmp["="] ? tmp["="] : tmp[":"];
-		var state = tmp[">"] || Number.NEGATIVE_INFINITY;
+		var state = tmp[">"] || -Infinity;
 		var sat;
 		if (
 			undefined !== msg.put &&

@@ -14,12 +14,13 @@ export default function (__usable_environment) {
 	Gun.chain.back = function (n, opt) {
 		var tmp;
 		n = n || 1;
-		if (-1 === n || Number.POSITIVE_INFINITY === n) {
+		if (-1 === n || Infinity === n) {
 			return this._.root.$;
 		} else if (1 === n) {
 			return (this._.back || this._).$;
 		}
-		var at = this._;
+		var gun = this;
+		var at = gun._;
 		if (typeof n === "string") {
 			n = n.split(".");
 		}
@@ -31,7 +32,7 @@ export default function (__usable_environment) {
 				tmp = (tmp || empty)[n[i]];
 			}
 			if (undefined !== tmp) {
-				return opt ? this : tmp;
+				return opt ? gun : tmp;
 			} else if ((tmp = at.back)) {
 				return tmp.$.back(n, opt);
 			}

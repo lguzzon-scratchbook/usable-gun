@@ -60,7 +60,7 @@ export default function (__usable_environment) {
 				if (enc === "hex") {
 					const bytes = input
 						.match(/([\da-fA-F]{2})/g)
-						.map((byte) => Number.parseInt(byte, 16));
+						.map((byte) => parseInt(byte, 16));
 					if (!bytes || !bytes.length) {
 						throw new TypeError("Invalid first argument for type 'hex'.");
 					}

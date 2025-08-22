@@ -1,7 +1,7 @@
-import aeskeyPlugin from "./aeskey.js";
 import rootPlugin from "./root.js";
-import settingsPlugin from "./settings.js";
 import shimPlugin from "./shim.js";
+import settingsPlugin from "./settings.js";
+import aeskeyPlugin from "./aeskey.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -65,7 +65,7 @@ export default function (__usable_environment) {
 					bufiv = shim.Buffer.from(json.iv, opt.encode || "base64");
 					bufct = shim.Buffer.from(json.ct, opt.encode || "base64");
 					var ct = await aeskey(key, buf, opt).then((aes) =>
-						shim /*shim.ossl ||*/.subtle
+						shim/*shim.ossl ||*/ .subtle
 							.decrypt(
 								{
 									// Keeping aesKey scope as private as possible...

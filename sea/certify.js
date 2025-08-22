@@ -84,20 +84,20 @@ export default function (__usable_environment) {
 				const expiry =
 					opt.expiry &&
 					(typeof opt.expiry === "number" || typeof opt.expiry === "string")
-						? Number.parseFloat(opt.expiry)
+						? parseFloat(opt.expiry)
 						: null;
 				const readPolicy = (policy || {}).read ? policy.read : null;
 				const writePolicy = (policy || {}).write
 					? policy.write
 					: typeof policy === "string" ||
-							Array.isArray(policy) ||
-							policy["+"] ||
-							policy["#"] ||
-							policy["."] ||
-							policy["="] ||
-							policy["*"] ||
-							policy[">"] ||
-							policy["<"]
+						  Array.isArray(policy) ||
+						  policy["+"] ||
+						  policy["#"] ||
+						  policy["."] ||
+						  policy["="] ||
+						  policy["*"] ||
+						  policy[">"] ||
+						  policy["<"]
 						? policy
 						: null;
 				// The "blacklist" feature is now renamed to "block". Why ? BECAUSE BLACK LIVES MATTER!
@@ -113,7 +113,7 @@ export default function (__usable_environment) {
 					typeof block === "string"
 						? block
 						: block.write &&
-								(typeof block.write === "string" || block.write["#"])
+							  (typeof block.write === "string" || block.write["#"])
 							? block.write
 							: null;
 				if (!readPolicy && !writePolicy)

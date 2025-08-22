@@ -1,9 +1,9 @@
-import askPlugin from "./ask.js";
-import dupPlugin from "./dup.js";
-import ontoPlugin from "./onto.js";
 import shimPlugin from "./shim.js";
-import statePlugin from "./state.js";
 import validPlugin from "./valid.js";
+import statePlugin from "./state.js";
+import ontoPlugin from "./onto.js";
+import dupPlugin from "./dup.js";
+import askPlugin from "./ask.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -111,7 +111,8 @@ export default function (__usable_environment, __usable_MODULE) {
 				this.to.next(msg);
 				return;
 			}
-			var as = this.as;
+			var eve = this;
+			var as = eve.as;
 			var at = as.at || as;
 			var gun = at.$;
 			var dup = at.dup;
@@ -139,7 +140,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				}
 			}
 			DBG && (DBG.uc = +new Date());
-			this.to.next(msg);
+			eve.to.next(msg);
 			DBG && (DBG.ua = +new Date());
 			if (msg.nts || msg.NTS) {
 				return;
@@ -333,7 +334,8 @@ export default function (__usable_environment, __usable_MODULE) {
 				DBG.pa = +new Date();
 				DBG.pm = DBG.pm || +new Date();
 			}
-			var root = this.as;
+			var eve = this;
+			var root = eve.as;
 			var graph = root.graph;
 			var ctx = msg._;
 			var put = msg.put;
@@ -354,7 +356,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				tmp.on("in", msg);
 			}
 			fire(ctx);
-			this.to.next(msg);
+			eve.to.next(msg);
 		}
 		function fire(ctx, msg) {
 			var root;
@@ -582,7 +584,8 @@ export default function (__usable_environment, __usable_MODULE) {
 	(() => {
 		Gun.chain.opt = function (opt) {
 			opt = opt || {};
-			var at = this._;
+			var gun = this;
+			var at = gun._;
 			var tmp = opt.peers || opt;
 			if (!__usable_globalThis.objectPlain(opt)) {
 				opt = {};
@@ -629,7 +632,7 @@ export default function (__usable_environment, __usable_MODULE) {
 						__usable_globalThis.stringRandom(l || 12)
 					);
 				};
-			return this;
+			return gun;
 		};
 	})();
 
@@ -644,9 +647,9 @@ export default function (__usable_environment, __usable_MODULE) {
 	var state_ify = Gun.state.ify;
 	var empty = {};
 	var C;
-	Gun.log = (...args) => (
-		!Gun.log.off && C.log(...args), [].slice.call(args).join(" ")
-	);
+	Gun.log = function (...args) {
+		return !Gun.log.off && C.log(...args), [].slice.call(args).join(" ");
+	};
 	Gun.log.once = (w, s, o) => (
 		((o = Gun.log.once)[w] = o[w] || 0), o[w]++ || Gun.log(s)
 	);
@@ -662,8 +665,11 @@ export default function (__usable_environment, __usable_MODULE) {
 	(Gun.window || {}).debug = (Gun.window || {}).debug || {
 		log() {},
 	};
-	(C = __usable_globalThis.debug).only = (i, s) =>
-		C.only.i && i === C.only.i && C.only.i++ && (C.log(...arguments) || s);
+	(C = __usable_globalThis.debug).only = function (i, s) {
+		return (
+			C.only.i && i === C.only.i && C.only.i++ && (C.log(...arguments) || s)
+		);
+	};
 	("Please do not remove welcome log unless you are paying for a monthly sponsorship, thanks!");
 	/* Moved to GunEnvironment :) */
 

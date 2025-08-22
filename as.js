@@ -252,11 +252,8 @@ export default function (__usable_environment) {
 				}, wait || 200);
 			};
 		as.sort = function sort(num, li) {
-			return Number.parseFloat(num) >=
-				Number.parseFloat(
-					__usable_globalThis.$(li).find(".sort").text() ||
-						Number.NEGATIVE_INFINITY,
-				)
+			return parseFloat(num) >=
+				parseFloat(__usable_globalThis.$(li).find(".sort").text() || -Infinity)
 				? li
 				: sort(num, li.prev());
 		};

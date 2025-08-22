@@ -1,6 +1,6 @@
+import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
 import gunPlugin from "./gun.js";
 import libAxePlugin from "./lib/axe.js";
-import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 

@@ -1,6 +1,6 @@
-import gunPlugin from "../gun.js";
 import seaPlugin from "./sea.js";
 import settingsPlugin from "./settings.js";
+import gunPlugin from "../gun.js";
 let __usable_isActivated = false;
 /**
  *
@@ -67,7 +67,10 @@ export default function (__usable_environment) {
 	// I have not yet added that to SEA yet in this alpha release. That is coming soon, but beware in the meanwhile!
 
 	function check(msg) {
-		var at = this.as;
+		// REVISE / IMPROVE, NO NEED TO PASS MSG/EVE EACH SUB?
+		var eve = this;
+
+		var at = eve.as;
 		var put = msg.put;
 		var soul = put["#"];
 		var key = put["."];
@@ -87,7 +90,7 @@ export default function (__usable_environment) {
 				SEA.verify(raw, false, (data) => {
 					// this is synchronous if false
 					put["="] = SEA.opt.unpack(data);
-					this.to.next(msg);
+					eve.to.next(msg);
 				});
 			});
 			return;
@@ -103,7 +106,7 @@ export default function (__usable_environment) {
 		if (0 <= soul.indexOf("<?")) {
 			// special case for "do not sync data X old" forget
 			// 'a~pub.key/b<?9'
-			tmp = Number.parseFloat(soul.split("<?")[1] || "");
+			tmp = parseFloat(soul.split("<?")[1] || "");
 			if (tmp && state < Gun.state() - tmp * 1000) {
 				// sec to ms
 				(tmp = msg._) && tmp.stun && tmp.stun--; // THIS IS BAD CODE! It assumes GUN internals do something that will probably change in future, but hacking in now.
@@ -112,26 +115,26 @@ export default function (__usable_environment) {
 		}
 		if ("~@" === soul) {
 			// special case for shared system data, the list of aliases.
-			check.alias(this, msg, val, key, soul, at, no);
+			check.alias(eve, msg, val, key, soul, at, no);
 			return;
 		}
 		if ("~@" === soul.slice(0, 2)) {
 			// special case for shared system data, the list of public keys for an alias.
-			check.pubs(this, msg, val, key, soul, at, no);
+			check.pubs(eve, msg, val, key, soul, at, no);
 			return;
 		}
 		//if('~' === soul.slice(0,1) && 2 === (tmp = soul.slice(1)).split('.').length){ // special case, account data for a public key.
 		if ((tmp = SEA.opt.pub(soul))) {
 			// special case, account data for a public key.
-			check.pub(this, msg, val, key, soul, at, no, at.user || "", tmp);
+			check.pub(eve, msg, val, key, soul, at, no, at.user || "", tmp);
 			return;
 		}
 		if (0 <= soul.indexOf("#")) {
 			// special case for content addressing immutable hashed data.
-			check.hash(this, msg, val, key, soul, at, no);
+			check.hash(eve, msg, val, key, soul, at, no);
 			return;
 		}
-		check.any(this, msg, val, key, soul, at, no, at.user || "");
+		check.any(eve, msg, val, key, soul, at, no, at.user || "");
 
 		// not handled
 	}
@@ -151,7 +154,7 @@ export default function (__usable_environment) {
 							for (let i = 0; i < hexStr.length; i++) {
 								base64 += !((i - 1) & 1)
 									? String.fromCharCode(
-											Number.parseInt(hexStr.substring(i - 1, i + 1), 16),
+											parseInt(hexStr.substring(i - 1, i + 1), 16),
 										)
 									: "";
 							}
@@ -199,7 +202,7 @@ export default function (__usable_environment) {
 						undefined !== data &&
 						undefined !== data.e &&
 						msg.put[">"] &&
-						msg.put[">"] > Number.parseFloat(data.e)
+						msg.put[">"] > parseFloat(data.e)
 					)
 						return no("Certificate expired."); // certificate expired
 					// "data.c" = a list of certificants/certified users
@@ -211,7 +214,7 @@ export default function (__usable_environment) {
 						(data.c === certificant || data.c.indexOf("*" || certificant) > -1)
 					) {
 						// ok, now "certificant" is in the "certificants" list, but is "path" allowed? Check path
-						const path =
+						let path =
 							soul.indexOf("/") > -1
 								? soul.replace(soul.substring(0, soul.indexOf("/") + 1), "")
 								: "";

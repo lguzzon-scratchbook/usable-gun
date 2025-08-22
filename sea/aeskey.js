@@ -1,6 +1,6 @@
+import shimPlugin from "./shim.js";
 import settingsPlugin from "./settings.js";
 import sha256Plugin from "./sha256.js";
-import shimPlugin from "./shim.js";
 let __usable_isActivated = false;
 const __usable_module = {};
 

@@ -32,12 +32,12 @@ async function gunEnv({
 		SEA,
 	}
 }
-async function gunApp({
+async function gunSpace({
 	gunEnvironmentOptions = cGunEnvironmentOptions,
 	gunPlugins = cGunPlugins,
 	gunStorePlugins = cGunStorePlugins,
 	gunOptions = {
-		file: "gunApp--Storage",
+		file: "gunSpace--Storage",
 		localStorage: false,
 		// peers: ['https://gundb.h3r3t0.win/gun']
 	},
@@ -58,7 +58,7 @@ async function gunApp({
 		gunOptionsFinal.localStorage = false
 		gunOptionsFinal.store = gunEnvironment.Env.library.Rmem()
 	}
-	gunOptionsFinal.file = gunOptions.file || `gunApp--Storage--${gunApp}`
+	gunOptionsFinal.file = gunOptions.file || `gunSpace--Storage--${gunApp}`
 	const gun = new gunEnvironment.Gun(gunOptionsFinal)
 	const ref = gun.get(gunApp);
 
@@ -85,4 +85,4 @@ async function gunApp({
 	}
 }
 
-export { gunEnv, gunApp }
+export { gunEnv, gunSpace }

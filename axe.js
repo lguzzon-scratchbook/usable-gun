@@ -1,6 +1,7 @@
-import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
 import gunPlugin from "./gun.js";
 import libAxePlugin from "./lib/axe.js";
+import mathRandomPlugin from "./usableLib/mathRandomPlugin.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -156,7 +157,7 @@ export default function (__usable_environment) {
 				axe.fall = {};
 				(
 					(text || "").match(
-						/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi,
+						/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi,
 					) || []
 				).forEach((url) => {
 					axe.fall[url] = {
@@ -192,7 +193,9 @@ export default function (__usable_environment) {
 			}
 		}
 		try {
-			__usable_module.exports = AXE;
+			if (typeof __usable_module != "undefined") {
+				__usable_module.exports = AXE;
+			}
 		} catch (e) {}
 	})();
 	__usable_environment.exports.default.axe = __usable_module.exports;

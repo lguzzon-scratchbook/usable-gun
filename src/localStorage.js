@@ -1,4 +1,5 @@
 import mathRandomPlugin from "./../usableLib/mathRandomPlugin.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -123,6 +124,9 @@ export default function (__usable_environment) {
 			var key = put["."];
 			var id = msg["#"];
 			var ok = msg.ok || "";
+			if (!(root.next || "")[soul]) {
+				return;
+			} // fix https://github.com/amark/gun/issues/1377
 			disk[soul] = __usable_globalThis.Gun.state.ify(
 				disk[soul],
 				key,

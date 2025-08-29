@@ -1,4 +1,5 @@
 import gunPlugin from "../gun.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -37,10 +38,8 @@ export default function (__usable_environment) {
 				}
 			: gunPlugin(__usable_environment);
 	Gun.chain.then = function (cb, opt) {
-		var gun = this;
-
 		var p = new Promise((res) => {
-			gun.once(res, opt);
+			this.once(res, opt);
 		});
 
 		return cb ? p.then(cb) : p;

@@ -1,12 +1,13 @@
-import shimPlugin from "./shim.js";
+import bufferPlugin from "./buffer.js";
+import certifyPlugin from "./certify.js";
+import decryptPlugin from "./decrypt.js";
+import encryptPlugin from "./encrypt.js";
 import rootPlugin from "./root.js";
-import workPlugin from "./work.js";
+import shimPlugin from "./shim.js";
 import signPlugin from "./sign.js";
 import verifyPlugin from "./verify.js";
-import encryptPlugin from "./encrypt.js";
-import decryptPlugin from "./decrypt.js";
-import certifyPlugin from "./certify.js";
-import bufferPlugin from "./buffer.js";
+import workPlugin from "./work.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 

@@ -1,5 +1,6 @@
-import rootPlugin from "./root.js";
 import bufferPlugin from "./buffer.js";
+import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 

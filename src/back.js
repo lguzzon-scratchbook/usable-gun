@@ -1,4 +1,5 @@
 import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -19,8 +20,7 @@ export default function (__usable_environment) {
 		} else if (1 === n) {
 			return (this._.back || this._).$;
 		}
-		var gun = this;
-		var at = gun._;
+		var at = this._;
 		if (typeof n === "string") {
 			n = n.split(".");
 		}
@@ -32,7 +32,7 @@ export default function (__usable_environment) {
 				tmp = (tmp || empty)[n[i]];
 			}
 			if (undefined !== tmp) {
-				return opt ? gun : tmp;
+				return opt ? this : tmp;
 			} else if ((tmp = at.back)) {
 				return tmp.$.back(n, opt);
 			}

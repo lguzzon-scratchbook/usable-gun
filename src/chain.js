@@ -1,4 +1,5 @@
 import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -35,14 +36,13 @@ export default function (__usable_environment) {
 	// language, consider implementing an easier API to build.
 	var Gun = rootPlugin(__usable_environment);
 	Gun.chain.chain = function (sub) {
-		var gun = this;
-		var at = gun._;
-		var chain = new (sub || gun).constructor(gun);
+		var at = this._;
+		var chain = new (sub || this).constructor(this);
 		var cat = chain._;
 		var root;
 		cat.root = root = at.root;
 		cat.id = ++root.once;
-		cat.back = gun._;
+		cat.back = this._;
 		cat.on = Gun.on;
 		cat.on("in", Gun.on.in, cat); // For 'in' if I add my own listeners to each then I MUST do it before in gets called. If I listen globally for all incoming data instead though, regardless of individual listeners, I can transform the data there and then as well.
 		cat.on("out", Gun.on.out, cat); // However for output, there isn't really the global option. I must listen by adding my own listener individually BEFORE this one is ever called.
@@ -507,7 +507,7 @@ export default function (__usable_environment) {
 	var empty = {};
 	var text_rand = __usable_globalThis.stringRandom;
 	var valid = Gun.valid;
-	var obj_has = (o, k) => o && Object.prototype.hasOwnProperty.call(o, k);
+	var obj_has = (o, k) => o && Object.hasOwn(o, k);
 	var state = Gun.state;
 	var state_is = state.is;
 	var state_ify = state.ify;

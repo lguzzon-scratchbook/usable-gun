@@ -1,4 +1,5 @@
 import userPlugin from "./user.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -56,16 +57,14 @@ export default function (__usable_environment) {
 			args && args.length > 1 && typeof args[args.length - 1] === "object"
 				? args[args.length - 1]
 				: {}; // opt is always the last parameter which typeof === 'object' and stands after cb
-
-		var gun = this;
-		var cat = gun._;
-		var root = gun.back(-1);
+		var cat = this._;
+		var root = this.back(-1);
 		if (cat.ing) {
 			(cb || noop)({
 				err: Gun.log("User is already being created or authenticated!"),
 				wait: true,
 			});
-			return gun;
+			return this;
 		}
 		cat.ing = true;
 		var act = {};
@@ -172,7 +171,7 @@ export default function (__usable_environment) {
 				}
 			} catch (e) {} // migrate UTF8 & Shuffle!
 			opt.change ? act.z() : (cb || noop)(at);
-			if (SEA.window && (gun.back("user")._.opt || opt).remember) {
+			if (SEA.window && (this.back("user")._.opt || opt).remember) {
 				// TODO: this needs to be modular.
 				try {
 					var sS = {};
@@ -278,7 +277,7 @@ export default function (__usable_environment) {
 		} else if (!alias && !pass) {
 			SEA.name(act.plugin);
 		}
-		return gun;
+		return this;
 	};
 	function obj_ify(o) {
 		if ("string" != typeof o) {

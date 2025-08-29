@@ -1,4 +1,5 @@
 import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 /**
  *

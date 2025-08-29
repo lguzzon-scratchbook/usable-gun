@@ -1,4 +1,5 @@
 import userPlugin from "./user.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -62,10 +63,8 @@ export default function (__usable_environment) {
 			args && args.length > 1 && typeof args[args.length - 1] === "object"
 				? args[args.length - 1]
 				: {}; // opt is always the last parameter which typeof === 'object' and stands after cb
-
-		var gun = this;
-		var cat = gun._;
-		var root = gun.back(-1);
+		var cat = this._;
+		var root = this.back(-1);
 		cb = cb || noop;
 		opt = opt || {};
 		if (false !== opt.check) {
@@ -80,7 +79,7 @@ export default function (__usable_environment) {
 				cb({
 					err: Gun.log(err),
 				});
-				return gun;
+				return this;
 			}
 		}
 		if (cat.ing) {
@@ -88,7 +87,7 @@ export default function (__usable_environment) {
 				err: Gun.log("User is already being created or authenticated!"),
 				wait: true,
 			});
-			return gun;
+			return this;
 		}
 		cat.ing = true;
 		var act = {};
@@ -101,7 +100,7 @@ export default function (__usable_environment) {
 				};
 				cat.ing = false;
 				(cb || noop)(ack);
-				gun.leave();
+				this.leave();
 				return;
 			}
 			act.salt = __usable_globalThis.stringRandom(64); // pseudo-randomly create a salt, then use PBKDF2 function to extend the password with it.
@@ -189,15 +188,14 @@ export default function (__usable_environment) {
 				pub: act.pair.pub,
 			}); // callback that the user has been created. (Note: ok = 0 because we didn't wait for disk to ack)
 			if (noop === cb) {
-				pair ? gun.auth(pair) : gun.auth(alias, pass);
+				pair ? this.auth(pair) : this.auth(alias, pass);
 			} // if no callback is passed, auto-login after signing up.
 		};
 		root.get("~@" + alias).once(act.a);
-		return gun;
+		return this;
 	};
 	User.prototype.leave = function () {
-		var gun = this;
-		var user = gun.back(-1)._.user;
+		var user = this.back(-1)._.user;
 		if (user) {
 			delete user.is;
 			delete user._.is;
@@ -211,6 +209,6 @@ export default function (__usable_environment) {
 				delete sS.pair;
 			} catch (e) {}
 		}
-		return gun;
+		return this;
 	};
 }

@@ -1,8 +1,9 @@
-import rootPlugin from "./root.js";
-import chainPlugin from "./chain.js";
 import backPlugin from "./back.js";
-import putPlugin from "./put.js";
+import chainPlugin from "./chain.js";
 import getPlugin from "./get.js";
+import putPlugin from "./put.js";
+import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 

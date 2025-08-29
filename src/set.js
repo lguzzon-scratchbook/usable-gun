@@ -1,4 +1,5 @@
 import indexPlugin from "./index.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -32,8 +33,7 @@ export default function (__usable_environment) {
 
 	var Gun = indexPlugin(__usable_environment);
 	Gun.chain.set = function (item, cb, opt) {
-		var gun = this;
-		var root = gun.back(-1);
+		var root = this.back(-1);
 		var soul;
 		var tmp;
 		cb = cb || (() => {});
@@ -43,19 +43,19 @@ export default function (__usable_environment) {
 			(item = {})["#"] = soul;
 		} // check if node, make link.
 		if ("string" == typeof (tmp = Gun.valid(item))) {
-			return gun.get((soul = tmp)).put(item, cb, opt);
+			return this.get((soul = tmp)).put(item, cb, opt);
 		} // check if link
 		if (!Gun.is(item)) {
 			if (__usable_globalThis.objectPlain(item)) {
-				item = root.get((soul = gun.back("opt.uuid")())).put(item);
+				item = root.get((soul = this.back("opt.uuid")())).put(item);
 			}
-			return gun.get(soul || root.back("opt.uuid")(7)).put(item, cb, opt);
+			return this.get(soul || root.back("opt.uuid")(7)).put(item, cb, opt);
 		}
-		gun.put((go) => {
+		this.put((go) => {
 			item.get((soul, o, msg) => {
 				// TODO: BUG! We no longer have this option? & go error not handled?
 				if (!soul) {
-					return cb.call(gun, {
+					return cb.call(this, {
 						err: Gun.log('Only a node can be linked! Not "' + msg.put + '"!'),
 					});
 				}

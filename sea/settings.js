@@ -1,5 +1,6 @@
 import rootPlugin from "./root.js";
 import shimPlugin from "./shim.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -61,7 +62,7 @@ export default function (__usable_environment) {
 	};
 	s.keyToJwk = (keyBytes) => {
 		const keyB64 = keyBytes.toString("base64");
-		const k = keyB64.replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/g, "");
+		const k = keyB64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 		return {
 			kty: "oct",
 			k,

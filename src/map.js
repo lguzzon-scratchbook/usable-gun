@@ -1,4 +1,5 @@
 import indexPlugin from "./index.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -57,8 +58,7 @@ export default function (__usable_environment) {
 		return tmp.$;
 	};
 	Gun.chain.map = function (cb) {
-		var gun = this;
-		var cat = gun._;
+		var cat = this._;
 		var lex;
 		var chain;
 		if (__usable_globalThis.objectPlain(cb)) {
@@ -73,17 +73,17 @@ export default function (__usable_environment) {
 			if ((chain = cat.each)) {
 				return chain;
 			}
-			(cat.each = chain = gun.chain())._.lex = lex || chain._.lex || cat.lex;
-			chain._.nix = gun.back("nix");
-			gun.on("in", map, chain._);
+			(cat.each = chain = this.chain())._.lex = lex || chain._.lex || cat.lex;
+			chain._.nix = this.back("nix");
+			this.on("in", map, chain._);
 			return chain;
 		}
 		Gun.log.once(
 			"mapfn",
 			"Map functions are experimental, their behavior and API may change moving forward. Please play with it and report bugs and ideas on how to improve it.",
 		);
-		chain = gun.chain();
-		gun.map().on(function (data, key, msg, eve) {
+		chain = this.chain();
+		this.map().on(function (data, key, msg, eve) {
 			var next = (cb || noop).call(this, data, key, msg, eve);
 			if (undefined === next) {
 				return;

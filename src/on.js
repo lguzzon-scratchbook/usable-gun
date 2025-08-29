@@ -1,4 +1,5 @@
 import indexPlugin from "./index.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -32,10 +33,7 @@ export default function (__usable_environment) {
 
 	var Gun = indexPlugin(__usable_environment);
 	Gun.chain.on = function (tag, arg, eas, as) {
-		// don't rewrite!
-		var gun = this;
-
-		var cat = gun._;
+		var cat = this._;
 		var root = cat.root;
 		var act;
 		if (typeof tag === "string") {
@@ -46,7 +44,7 @@ export default function (__usable_environment) {
 			if (eas && eas.$) {
 				(eas.subs || (eas.subs = [])).push(act);
 			}
-			return gun;
+			return this;
 		}
 		var opt = arg;
 		(opt =
@@ -61,7 +59,7 @@ export default function (__usable_environment) {
 		//opt.last = {};
 
 		// can we assign this to the at instead, like in once?
-		gun.get(tag, opt);
+		this.get(tag, opt);
 		/*gun.get(function on(data,key,msg,eve){ var $ = this;
     	if(tmp = root.hatch){ // quick hack!
     		if(wait[$._.id]){ return } wait[$._.id] = 1;
@@ -92,7 +90,7 @@ export default function (__usable_environment) {
     (cat.act||(cat.act={}))[id = String.random(7)] = one;
     one.off = function(){ one.stun = 1; if(!cat.act){ return } delete cat.act[id] }
     cat.on('out', {get: {}});*/
-		return gun;
+		return this;
 	};
 	// Rules:
 	// 1. If cached, should be fast, but not read while write.
@@ -103,13 +101,12 @@ export default function (__usable_environment) {
 		if (!cb) {
 			return none(this, opt);
 		}
-		var gun = this;
-		var cat = gun._;
+		var cat = this._;
 		var root = cat.root;
 		var data = cat.put;
 		var id = __usable_globalThis.stringRandom(7);
 		var tmp;
-		gun.get(
+		this.get(
 			function (data, key, msg, eve) {
 				var $ = this;
 				var at = $._;
@@ -168,7 +165,7 @@ export default function (__usable_environment) {
 				on: 1,
 			},
 		);
-		return gun;
+		return this;
 	};
 	function none(gun, opt, chain) {
 		Gun.log.once(
@@ -182,10 +179,7 @@ export default function (__usable_environment) {
 		return chain;
 	}
 	Gun.chain.off = function () {
-		// make off more aggressive. Warning, it might backfire!
-		var gun = this;
-
-		var at = gun._;
+		var at = this._;
 		var tmp;
 		var cat = at.back;
 		if (!cat) {
@@ -226,6 +220,6 @@ export default function (__usable_environment) {
 			});
 		}
 		at.on("off", {});
-		return gun;
+		return this;
 	};
 }

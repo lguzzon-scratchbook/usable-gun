@@ -1,7 +1,8 @@
-import rootPlugin from "./root.js";
-import shimPlugin from "./shim.js";
-import settingsPlugin from "./settings.js";
 import aeskeyPlugin from "./aeskey.js";
+import rootPlugin from "./root.js";
+import settingsPlugin from "./settings.js";
+import shimPlugin from "./shim.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -65,7 +66,7 @@ export default function (__usable_environment) {
 					iv: shim.random(15),
 				}; // consider making this 9 and 15 or 18 or 12 to reduce == padding.
 				var ct = await aeskey(key, rand.s, opt).then((aes) =>
-					shim/*shim.ossl ||*/ .subtle
+					shim /*shim.ossl ||*/.subtle
 						.encrypt(
 							{
 								// Keeping the AES key scope as private as possible...

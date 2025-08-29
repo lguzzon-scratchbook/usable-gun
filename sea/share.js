@@ -1,4 +1,5 @@
 import userPlugin from "./user.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -63,9 +64,8 @@ export default function (__usable_environment) {
 		__usable_globalThis.debug.log(
 			"user.delete() IS DEPRECATED AND WILL BE MOVED TO A MODULE!!!",
 		);
-		var gun = this;
-		var root = gun.back(-1);
-		var user = gun.back("user");
+		var root = this.back(-1);
+		var user = this.back("user");
 		try {
 			user.auth(alias, pass, () => {
 				(user.is || {}).pub; // Delete user data
@@ -81,7 +81,7 @@ export default function (__usable_environment) {
 		} catch (e) {
 			Gun.log("User.delete failed! Error:", e);
 		}
-		return gun;
+		return this;
 	};
 	User.prototype.alive = async function () {
 		__usable_globalThis.debug.log("user.alive() IS DEPRECATED!!!");
@@ -124,11 +124,10 @@ export default function (__usable_environment) {
 		__usable_globalThis.debug.log(
 			"`.grant` API MAY BE DELETED OR CHANGED OR RENAMED, DO NOT USE!",
 		);
-		var gun = this;
-		var user = gun.back(-1).user();
+		var user = this.back(-1).user();
 		var pair = user._.sea;
 		var path = "";
-		gun.back((at) => {
+		this.back((at) => {
 			if (at.is) {
 				return;
 			}
@@ -151,17 +150,16 @@ export default function (__usable_environment) {
 			enc = await SEA.encrypt(sec, dh);
 			user.get("grant").get(pub).get(path).put(enc, cb);
 		})();
-		return gun;
+		return this;
 	};
 	User.prototype.secret = function (data, cb) {
 		__usable_globalThis.debug.log(
 			"`.secret` API MAY BE DELETED OR CHANGED OR RENAMED, DO NOT USE!",
 		);
-		var gun = this;
-		var user = gun.back(-1).user();
+		var user = this.back(-1).user();
 		var pair = user.pair();
 		var path = "";
-		gun.back((at) => {
+		this.back((at) => {
 			if (at.is) {
 				return;
 			}
@@ -177,9 +175,9 @@ export default function (__usable_environment) {
 				user.get("trust").get(pair.pub).get(path).put(enc);
 			}
 			enc = await SEA.encrypt(data, sec);
-			gun.put(enc, cb);
+			this.put(enc, cb);
 		})();
-		return gun;
+		return this;
 	};
 
 	/**

@@ -1,9 +1,10 @@
-import shimPlugin from "./shim.js";
-import validPlugin from "./valid.js";
-import statePlugin from "./state.js";
-import ontoPlugin from "./onto.js";
-import dupPlugin from "./dup.js";
 import askPlugin from "./ask.js";
+import dupPlugin from "./dup.js";
+import ontoPlugin from "./onto.js";
+import shimPlugin from "./shim.js";
+import statePlugin from "./state.js";
+import validPlugin from "./valid.js";
+
 let __usable_isActivated = false;
 const __usable_module = {};
 
@@ -111,8 +112,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				this.to.next(msg);
 				return;
 			}
-			var eve = this;
-			var as = eve.as;
+			var as = this.as;
 			var at = as.at || as;
 			var gun = at.$;
 			var dup = at.dup;
@@ -140,7 +140,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				}
 			}
 			DBG && (DBG.uc = +new Date());
-			eve.to.next(msg);
+			this.to.next(msg);
 			DBG && (DBG.ua = +new Date());
 			if (msg.nts || msg.NTS) {
 				return;
@@ -334,8 +334,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				DBG.pa = +new Date();
 				DBG.pm = DBG.pm || +new Date();
 			}
-			var eve = this;
-			var root = eve.as;
+			var root = this.as;
 			var graph = root.graph;
 			var ctx = msg._;
 			var put = msg.put;
@@ -356,7 +355,7 @@ export default function (__usable_environment, __usable_MODULE) {
 				tmp.on("in", msg);
 			}
 			fire(ctx);
-			eve.to.next(msg);
+			this.to.next(msg);
 		}
 		function fire(ctx, msg) {
 			var root;
@@ -584,8 +583,7 @@ export default function (__usable_environment, __usable_MODULE) {
 	(() => {
 		Gun.chain.opt = function (opt) {
 			opt = opt || {};
-			var gun = this;
-			var at = gun._;
+			var at = this._;
 			var tmp = opt.peers || opt;
 			if (!__usable_globalThis.objectPlain(opt)) {
 				opt = {};
@@ -610,7 +608,7 @@ export default function (__usable_environment, __usable_MODULE) {
 			obj_each(opt, function each(k) {
 				var v = this[k];
 				if (
-					(this && this.hasOwnProperty(k)) ||
+					(this && Object.hasOwn(this, k)) ||
 					"string" == typeof v ||
 					__usable_globalThis.objectEmpty(v)
 				) {
@@ -632,7 +630,7 @@ export default function (__usable_environment, __usable_MODULE) {
 						__usable_globalThis.stringRandom(l || 12)
 					);
 				};
-			return gun;
+			return this;
 		};
 	})();
 
@@ -647,9 +645,9 @@ export default function (__usable_environment, __usable_MODULE) {
 	var state_ify = Gun.state.ify;
 	var empty = {};
 	var C;
-	Gun.log = function (...args) {
-		return !Gun.log.off && C.log(...args), [].slice.call(args).join(" ");
-	};
+	Gun.log = (...args) => (
+		!Gun.log.off && C.log(...args), [].slice.call(args).join(" ")
+	);
 	Gun.log.once = (w, s, o) => (
 		((o = Gun.log.once)[w] = o[w] || 0), o[w]++ || Gun.log(s)
 	);
@@ -665,11 +663,8 @@ export default function (__usable_environment, __usable_MODULE) {
 	(Gun.window || {}).debug = (Gun.window || {}).debug || {
 		log() {},
 	};
-	(C = __usable_globalThis.debug).only = function (i, s) {
-		return (
-			C.only.i && i === C.only.i && C.only.i++ && (C.log(...arguments) || s)
-		);
-	};
+	(C = __usable_globalThis.debug).only = (i, s) =>
+		C.only.i && i === C.only.i && C.only.i++ && (C.log(...arguments) || s);
 	("Please do not remove welcome log unless you are paying for a monthly sponsorship, thanks!");
 	/* Moved to GunEnvironment :) */
 

@@ -1,4 +1,5 @@
 import rootPlugin from "./root.js";
+
 let __usable_isActivated = false;
 /**
  *
@@ -44,11 +45,10 @@ export default function (__usable_environment) {
 				}
 				return gun;
 			}
-			var back = this;
-			var cat = back._;
+			var cat = this._;
 			var next = cat.next || empty;
 			if (!(gun = next[key])) {
-				gun = key && cache(key, back);
+				gun = key && cache(key, this);
 			}
 			gun = gun && gun.$;
 		} else if ("function" == typeof key) {
